@@ -2,21 +2,31 @@ const { Router } = require("express");
 const {
   getAllUsers,
   getUserById,
-  createUser,
   deleteUserById,
+  loginUser,
+  getUserInfo,
+  registerUser,
+  getAccessToken,
 } = require("../controllers/user.controller");
+const {
+  fetchUser,
+  handleRefreshToken,
+} = require("../middlewares/fetchUser.middleware");
 
 const UserRouter = Router();
 
 UserRouter.get("/", getAllUsers);
 
-UserRouter.get("/:id", getUserById);
+UserRouter.get("/userinfo", fetchUser, getUserInfo);
 
-UserRouter.post("/", createUser);
+UserRouter.get("/token", handleRefreshToken, getAccessToken);
 
-// UserRouter.put("/:id");
+UserRouter.post("/register", registerUser);
+
+UserRouter.post("/login", loginUser);
 
 UserRouter.delete("/:id", deleteUserById);
+UserRouter.get("/:id", getUserById);
 
 module.exports = {
   UserRouter,

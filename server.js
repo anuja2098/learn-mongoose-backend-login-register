@@ -1,9 +1,11 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 const app = express();
 const mongoose = require("mongoose");
 const { UserRouter } = require("./routes/user.routes");
+const { ProductRouter } = require("./routes/product.routes");
 const { errorMiddleware } = require("./middlewares/error.middleware");
 
 mongoose
@@ -12,6 +14,7 @@ mongoose
   .catch((err) => console.log("Mongo error", err));
 
 app.use(morgan("tiny")); // logger
+app.use(cors());
 app.use(bodyParser.json()); // for req.body
 
 app.get("/", (req, res) => {
@@ -21,6 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/user", UserRouter);
+app.use("/product", ProductRouter);
 
 app.use(errorMiddleware);
 
